@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>❤</title>
+<style>
+  html,body{margin:0;height:100%;background:#0b0610;overflow:hidden}
+  canvas{display:block}
+  #t{position:fixed;bottom:8%;width:100%;text-align:center;color:#fff;
+     font:700 clamp(24px,5vw,48px) system-ui,Arial;text-shadow:0 0 18px #ff2d6f}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="t">אוהב אותך ❤</div>
+<script>
+const c=document.getElementById('c'),x=c.getContext('2d');
+let W,H;function rs(){W=c.width=innerWidth;H=c.height=innerHeight}rs();onresize=rs;
+const P=[];for(let i=0;i<220;i++){P.push({t:Math.random()*Math.PI*2,r:Math.random(),s:Math.random()*.6+.4,o:Math.random()*6})}
+function pt(t){return[16*Math.pow(Math.sin(t),3),-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))]}
+let f=0;
+(function loop(){
+  f++;
+  x.fillStyle='rgba(11,6,16,.25)';x.fillRect(0,0,W,H);
+  const beat=Math.pow(Math.abs(Math.sin(f*.04)),6);
+  const S=Math.min(W,H)/38*(1+.12*beat),cx=W/2,cy=H/2-H*.04;
+  for(const p of P){
+    p.t+=.004*p.s;
+    const[a,b]=pt(p.t),k=.55+p.r*.45+.04*Math.sin(f*.05+p.o);
+    x.beginPath();
+    x.arc(cx+a*S*k,cy+b*S*k,1.5+p.r*2.5,0,7);
+    x.fillStyle=`hsla(${340+p.r*20},100%,${55+p.r*20}%,.9)`;
+    x.shadowColor='#ff2d6f';x.shadowBlur=14;x.fill();
+  }
+  x.shadowBlur=0;
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
